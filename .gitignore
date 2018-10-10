@@ -1,3 +1,23 @@
+
+#project specific
+.DS_Store
+*/venv/
+*/.idea/
+*/.pytest_cache/
+*/reports/assets/
+*/reports/screenshots
+*/reports/logs.txt
+*/*/__pycache__/
+*/*/*/__pycache__/
+*/*/.pytest_cache/
+*/*/*/.pytest_cache/
+*/env/
+*/selenium_tests/.pytest_cache
+
+
+
+
+# auto generated
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,3 +122,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
