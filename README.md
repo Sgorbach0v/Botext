@@ -11,7 +11,7 @@ Language: Python 3
 use `pip install -r requirements.txt` from the root folder
 
 ## Dependencies
-###TestRail
+### TestRail
 To use this framework you will need to have a TestRail account with test cases.
 TestRail trial account can be obtained here: https://secure.gurock.com/customers/testrail/trial/
 
