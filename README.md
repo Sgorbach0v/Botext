@@ -3,8 +3,8 @@
 ## Description
 This automation tool is used to test chatbots in facebook messenger and is under active development.
 
-Testing framework: PyTest__
-Test case management system: TestRail__
+Testing framework: PyTest  
+Test case management system: TestRail  
 Language: Python 3
 
 ## Installation
