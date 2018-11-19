@@ -1,0 +1,205 @@
+#TODO high priority:
+1. If breaks need to delete the conversation any way
+2. Get account names, amounts, transactions of only last carousel!!! get the last query and then sibling div --> then regular flows
+3. Get all the sibling divs after the last query
+4. check verify text function to see if it gets the right text, as the position class is 'right', but actual right can be above
+
+
+#TODO: the rest
+#1. add comments
+#2. create a list of all keywords for test rail
+#3. add WebDriveWaits to every selenium function
+#4. Think about features: create suits, number of runs,
+#5. Deal with precondtions -- that's how authorized, not authorized can be dealt with
+#7. Change emoji to words for test rail
+#8. figure out the emojis from bot responses
+#9. Strip final spaces in a 'and ' queries and everywhere else
+#10. If check qrs with check accounts --> click backwards maybe?
+#11. Read about naming conventions and pep8
+#12. Naming scheme for test cases
+#13. Add screenshots
+#14. Upload results to G Drive and add the link to the run
+#16. Build a command line interface
+#17. Automatically create JIRA tickets
+#18. Rerun failed test cases
+#19. Use relatives paths everywhere
+#20. Map arguments to ids in TestRail with dictionaries, not if statements
+#21. Think of all the possible arguments needed to run test cases, e.g. sections, etc.
+#21. Create different classes for each bot's selenium's driver or a separate file for each assistant
+#22. Increase test case coverage for each feature
+#23. Create and refactor list of keywords
+#24. Proper wind down: logout if precondition of the next one is that the user should be logged out
+#25. All preconditions:
+#26. Create a new function with assertion, so that not all the test cases is printed out
+#27. Wait if there three dots - 'bot is typing'
+#28. Logger https://pypi.org/project/pytest-logger/
+#29. Refactor selenium driver class
+#30. Add local option for the bot to test
+#31. Where to save link to html report or how to upload it to G Drive
+#32. Failing logs in test rail, pytest-rail increase the limit
+#33. Add docstrings to all objects
+#34. Add expected number of QRs
+#35. Reorder class functions according to keywords order
+
+
+
+# Test case #4: Get balance
+# TODO: create test case in test rail
+# def test_get_my_balance(finn_core_bot):
+#     #initialize and login to fb messenger -- not working yet due to FB bug
+#     bot = fb_bots(finn_core_bot)
+#     bot.login_to_messenger(username=credentials['finn core']['username'], password=credentials['finn core']['password'])
+#     # bot.get_started(query='Get Started')
+#     # time.sleep(3)
+#
+#     bot.send_query('hi')
+#
+#     #Step Click on 'Get my balance' QR
+#     bot.click_on_QR(QR_text='Get my balance')
+#
+#     #Step View transactions for checking
+#     bot.view_transactions_for_accounts(account_name='Chequing')
+#
+#     #Step
+#     bot.flag_as_fraud('Email')
+#     bot.click_on_QR('Yes, please!')
+#
+#     #Step
+#     bot.send_query('check spending')
+#
+#     #Step
+#     bot.click_on_QR('This Year')
+#
+#     #Step
+#     bot.view_categories('View Categories')
+#
+#     #Step
+#     bot.view_transactions_for_categories('Uncategorized')
+#
+#     #Step
+#     bot.send_query('Logout')
+
+
+# Demo test cases -- works fine
+# Test case #1 Send hi and verify text
+# @pytestrail.case('C6')
+# def test_send_hi_text_ID_C6(finn_core_bot):
+#
+#     #Step 1: initialize bot and login to fb messenger
+#     bot = fb_bots(finn_core_bot)
+#     bot.login_to_messenger(username=credentials['finn core']['username'], password=credentials['finn core']['password'])
+#
+#     #Step 2: Send hello
+#     bot.send_query('hello')
+#
+#     #Step 3: Verify text
+#     bot.take_screenshot('test_get_started_text_ID_C6')
+#     actual_responses = bot.get_responses(query='hello')
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=6, query='hello')
+#     for actual_response in actual_responses:
+#         assert actual_response in expected_responses, 'This item failed "{}"'.format(actual_response)
+#     print('Actual responses: ',actual_responses)
+#     print('Expected responses: ',expected_responses)
+#
+#
+# #Test case #2 Send hi and verify text -- works fine
+# @pytestrail.case('C7')
+# def test_send_hi_QRs_ID_C7(finn_core_bot):
+#     #Step 1: initialize bot and login to fb messenger
+#     bot = fb_bots(finn_core_bot)
+#     bot.login_to_messenger(username=credentials['finn core']['username'], password=credentials['finn core']['password'])
+#
+#     #Step 2: Send hello
+#     bot.send_query('hello')
+#
+#     #Step 3: Verify text
+#     bot.take_screenshot('test_get_started_text_ID_C7')
+#     actual_responses = bot.get_QRs()
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=7, query='hello')
+#     for actual_response in actual_responses:
+#         assert actual_response in expected_responses, 'This item failed {}'.format(actual_response)
+#     print('Actual responses: ', actual_responses)
+#     print('Expected responses: ', expected_responses)
+#
+#
+# #Test case #3
+# @pytestrail.case('C8')
+# def test_get_balance_ID_C8(finn_core_bot):
+#     #Step 1: initialize bot and login to fb messenger
+#     bot = fb_bots(finn_core_bot)
+#     bot.login_to_messenger(username=credentials['finn core']['username'], password=credentials['finn core']['password'])
+#
+#     #Step 2: Authenticate -- UNCOMMENT LATER
+#     bot.send_query('login')
+#     bot.click_go_to_secure_login('Go to secure login')
+#     bot.enter_username_and_password_secure_login(username='user', password='password')
+#
+#     #Step 3: Send 'Get balance'
+#     bot.send_query('Get balance')
+#
+#     #Step 4: Verify Text
+#     actual_responses = bot.get_responses(query='Get balance')
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=8, query='Get balance')
+#     for actual_response in actual_responses:
+#         assert actual_response in expected_responses, 'This item failed {}'.format(actual_response)
+#     print('Actual responses: ', actual_responses)
+#     print('Expected responses: ', expected_responses)
+#
+#     #Step 5: Verify Chequing account
+#     actual_account_names = bot.get_account_names()
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=8, query='Carousel info')
+#     for actual_response in actual_account_names:
+#         assert actual_response in expected_responses, 'This item failed {}'.format(actual_response)
+#     print('Actual responses: ', actual_account_names)
+#     print('Expected responses: ', expected_responses)
+#
+#
+# #Test case #4 check spending
+# @pytestrail.case('C9')
+# def test_check_spending_ID_C9(finn_core_bot):
+#     # Step 1: initialize bot and login to fb messenger
+#     bot = fb_bots(finn_core_bot)
+#     bot.login_to_messenger(username=credentials['finn core']['username'], password=credentials['finn core']['password'])
+#
+#     #Step 2: send 'check spending'
+#     bot.send_query('check spending')
+#
+#     #Step 3: Verify response is correct
+#     actual_responses = bot.get_responses('check spending')
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=9, query='check spending')
+#     for actual_response in actual_responses:
+#         assert actual_response in expected_responses, 'This item failed {}'.format(actual_response)
+#     print('Actual responses: ', actual_responses) #no responses
+#     print('Expected responses: ', expected_responses)
+#
+#     #Step 4: Select time period
+#     bot.click_on_QR('This Year')
+#
+#     #Step 5: Verify response is correct
+#     actual_responses = bot.get_responses('This Year')
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=9, query='This Year')
+#     for actual_response in actual_responses:
+#         assert actual_response in expected_responses, 'This item failed {}'.format(actual_response)
+#     print('Actual responses: ', actual_responses)
+#     print('Expected responses: ', expected_responses)
+#
+#     #TODO verify all spending is right
+#
+#     #Step 6: Click 'View Categories'
+#     bot.view_categories('View Categories')
+#
+#     #Step 7: Check spending categories
+#     spending_categories = bot.get_account_names()
+#     expected_responses = get_expected_outcomes(project_id='1', suite_id='1', case_id=9, query='Carousel info')
+#     for actual_response in spending_categories:
+#         assert actual_response in expected_responses, 'This item failed {}'.format(actual_response)
+#     print('Actual responses: ', spending_categories)
+#     print('Expected responses: ', expected_responses)
+
+
+
+
+
+
+
+

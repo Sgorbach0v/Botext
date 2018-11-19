@@ -20,13 +20,27 @@ def driver(request):
     driver.quit()
 
 
-#fixture to open fb_messenger page: TODO: create fixture for every bot or parameters
+#fixture to open fb_messenger page: TODO: create fixture for every bot. USE parameters
 @pytest.fixture
 def finn_core_messenger(driver):
     browser = driver
     browser.get('https://www.messenger.com/t/142941776333286') #FAISTGCORE bot
-
     return browser
+
+
+@pytest.fixture
+def atb_messenger(driver):
+    browser = driver
+    browser.get('https://www.messenger.com/t/finn.c1.d') #ATB bot
+    return browser
+
+
+@pytest.fixture
+def finn_demo_messenger(driver):
+    browser = driver
+    browser.get('https://www.messenger.com/t/1457326781030040') #finn demo bot
+    return browser
+
 
 #function to delete the conversation before closing the browser
 def delete_conversation(driver):

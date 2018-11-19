@@ -1,7 +1,7 @@
 credentials = {
         'finn core':{
-                    'username':'XXXX', #provide your facebook messenger username
-                    'password':'XXXX' #provide your facebook messenger password
+                    'username':'xxxx',
+                    'password':'xxxx'
                     },
         'atb bot': {
                     'username':'atbaccount',

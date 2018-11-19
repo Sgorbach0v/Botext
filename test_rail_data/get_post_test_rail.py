@@ -1,26 +1,25 @@
-import os
-import re
-
-from testrail.testrail_api.testrail import APIClient
+from test_rail_data.testrail_api.testrail import APIClient
 
 class test_rail(APIClient):
 
     #TODO: move usernames, passwords to .env file
     def __init__(self):
-        self.client = APIClient('XXXXX')
-        self.client.user = 'XXXXX'
-        self.client.password = 'XXXXXX'
+        """Provide your credentials here
+
+        """
+        self.client = APIClient('xxxx')
+        self.client.user = 'xxxx'
+        self.client.password = 'xxxx'
 
     #get all test cases for a specified project and suite from test rail
     def get_all_test_cases(self, project_id, suite_id,):
         all_test_cases_list = self.client.send_get('get_cases/' + project_id + '&suite_id=' + suite_id)
         return all_test_cases_list
 
-    #TODO: where to specify project and suite?
     #TODO: do not allow empty action and expected result steps
     #get information about all test cases from test rail
-    def get_info_for_testcases(self):
-        all_test_cases = self.get_all_test_cases(project_id='1',suite_id='1')
+    def get_info_for_testcases(self, project_id, suite_id, assistant='default_name', channel_name='default_name'):
+        all_test_cases = self.get_all_test_cases(project_id=project_id, suite_id=suite_id)
         list_of_all_test_cases = []
 
         #iterate over all test cases
@@ -34,15 +33,17 @@ class test_rail(APIClient):
 
                 expected_steps_dict = {}
 
+
                 #take only action steps (not expected steps) and create a list of a query + argument (message, action, ...)
                 #list is needed to handle queries with arguments. If no args, then return a list with one list item. All args will be on the next line in test rail
                 if '\n' in step_item['content']:
                     step_pytest = step_item['content'].split('\n')
 
-                    #rid of 'and' for consistency where test rail steps have multiple steps in one
-                    if 'and' in step_pytest:
-                        and_index = step_pytest.index('and')
-                        step_pytest.pop(and_index)
+                    #rid of 'and', 'for' for consistency where test rail steps have multiple steps in one
+                    for conjunction in ['and', 'for']:
+                        if conjunction in step_pytest:
+                            conj_index = step_pytest.index(conjunction)
+                            step_pytest.pop(conj_index)
 
                     #adding underscore so the first step can be used as a function name in pytest
                     step_pytest[0] = step_pytest[0].lower().replace(' ','_')
@@ -58,6 +59,7 @@ class test_rail(APIClient):
 
                 #get indexes of lines that tell what to verify
                 list_of_indexes_of_lines_with_verify = [list_of_exepcted_outcomes.index(x) for x in list_of_exepcted_outcomes if 'verify' in x.lower()]
+
 
                 #iterate over all of the indexes
                 for i in range(len(list_of_indexes_of_lines_with_verify)):
@@ -94,23 +96,27 @@ class test_rail(APIClient):
                 description_steps_dict.update({'step_' + str(counter) + '_expected' : expected_steps_dict})
                 counter = counter + 1
 
-            #create a dictionary with only required information for pytest use
+            # create a dictionary with only required information for pytest use
             dictionary_for_pytest = {'id': one_test_case['id'],
                                      'tc title': one_test_case['title'].replace(' ','_').lower(),
-                                     'assistant': str(one_test_case['custom_assistant']).replace('1','finn_core_messenger'),
+                                     'assistant': assistant,
+                                     'channel': channel_name,
                                      'steps': description_steps_dict,
                                      #'Platform': one_test_case['custom_platform'], not yet implemented. Maybe add later
                                      }
 
             list_of_all_test_cases.append(dictionary_for_pytest)
 
+        self.all_test_cases = list_of_all_test_cases
         return list_of_all_test_cases
 
 
-test_rail_calls = test_rail()
-result = test_rail_calls.get_info_for_testcases()
-
-#print(result)
-for i in result:
-     print('script returns', i)
+# #testing
+# rail = test_rail()
+# # result = rail.get_all_test_cases(str(1),str(1))
+# result2 = rail.get_info_for_testcases(str(1),str(1))
+# #
+# #print(result)
+# for i in result2:
+#      print('script returns', i)
 
